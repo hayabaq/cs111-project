@@ -1,4 +1,3 @@
-#import MySQLdb
 from tkinter import *
 app = Tk()
 
