@@ -1,133 +1,95 @@
-from tkinter import *
-#from db import Database
+import tkinter as tk
 
-#db = Database('main.db')
+def add():
+    print('add')
 
-
-def populate_list():
-#    parts_list.delete(0, END)  # doesn't repeat
-    print('Populate')
-#    for row in db.fetch():
-#        parts_list.insert(END, row)
-
-
-def add_item():
-     print('Add')
-    #if part_text.get() == '' or customer_text.get() == '' or retailer_text.get() == '' or price_text.get() == '':
-#        messagebox.showerror('Required Fields', 'Please include all fields')
-#        return
-#    db.insert(part_text.get(), customer_text.get(),
-#              retailer_text.get(), price_text.get())
-#    parts_list.delete(0, END)
-#    parts_list.insert(END, (part_text.get(), customer_text.get(),
-#                            retailer_text.get(), price_text.get()))
-#    clear_text()
-#    populate_list()
-
-
-def select_item(event):
-#    try:
-
-    print('select')
-#        global selected_item
-#        index = parts_list.curselection()[0]
-#        selected_item = parts_list.get(index)
-        # print(selected_item)
-
- #       part_entry.delete(0, END)
-  #      part_entry.insert(END, selected_item[1])
-   #     customer_entry.delete(0, END)
-    #    customer_entry.insert(END, selected_item[2])
-     #   retailer_entry.delete(0, END)
-    #    retailer_entry.insert(END, selected_item[3])
-    #    price_entry.delete(0, END)
-    #    price_entry.insert(END, selected_item[4])
-    #except IndexError:
-    #    pass
-
-
+def select_item():
+    pass
 def remove_item():
-     print("Remove")
- #   db.remove(selected_item[0])
-  #  clear_text()
-   # populate_list()
-
-
+    pass
 def update_item():
-     print("Update")
- #   db.update(selected_item[0], part_text.get(), customer_text.get(),
-  #            retailer_text.get(), price_text.get())
-   # populate_list()
-
-
+    pass
 def clear_text():
-     print("Clear")
- #   part_entry.delete(0, END)
-  #  customer_entry.delete(0, END)
-   # retailer_entry.delete(0, END)
-   # price_entry.delete(0, END)
+    pass
+LARGEFONT =("Verdana", 35)
 
+class tkinterApp(tk.Tk):
+     
+    # __init__ function for class tkinterApp
+    def __init__(self, *args, **kwargs):
+         
+        # __init__ function for class Tk
+        tk.Tk.__init__(self, *args, **kwargs)
+         
+        # creating a container
+        container = tk.Frame(self) 
+        container.pack(side = "top", fill = "both", expand = True)
+  
+        container.grid_rowconfigure(0, weight = 1)
+        container.grid_columnconfigure(0, weight = 1)
+  
+        # initializing frames to an empty array
+        self.frames = {} 
+  
+        # iterating through a tuple consisting
+        # of the different page layouts
+        for F in (main, add):
+  
+            frame = F(container, self)
+  
+            # initializing frame of that object from
+            # startpage, page1, page2 respectively with
+            # for loop
+            self.frames[F] = frame
+  
+            frame.grid(row = 0, column = 0, sticky ="nsew")
+  
+        self.show_frame(main)
+  
+    # to display the current frame passed as
+    # parameter
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
 
-# Create window object
-app = Tk()
+class main(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        add_btn = tk.Button(self, text ="Add",command = lambda : controller.show_frame(add))
+        add_btn.pack()
+        remove_btn = tk.Button(self, text="Remove Part", width=10, command=remove_item)
+        remove_btn.pack()
+        update_btn = tk.Button(self, text="Update Part", width=10, command=update_item)
+        update_btn.pack()
+        clear_btn = tk.Button(self, text="Clear Input", width=10, command=clear_text)
+        clear_btn.pack()
+        scrollbar = tk.Scrollbar(self)
+        todo_list = tk.Listbox(self, yscrollcommand = scrollbar.set )
+        for line in range(100):
+            todo_list.insert(tk.END, "This is line number " + str(line))
+        scrollbar.pack()
+        todo_list.pack()
+        scrollbar.configure(command=todo_list.yview)
+        todo_list.bind('<<ListboxSelect>>', select_item)
 
-# Part
-part_text = StringVar()
-part_label = Label(app, text='Part Name', font=('bold', 14), pady=20)
-part_label.grid(row=0, column=0, sticky=W)
-part_entry = Entry(app, textvariable=part_text)
-part_entry.grid(row=0, column=1)
-# CUstomer
-customer_text = StringVar()
-customer_label = Label(app, text='Customer', font=('bold', 14))
-customer_label.grid(row=0, column=2, sticky=W)
-customer_entry = Entry(app, textvariable=customer_text)
-customer_entry.grid(row=0, column=3)
-# Retailer
-retailer_text = StringVar()
-retailer_label = Label(app, text='Retailer ', font=('bold', 14))
-retailer_label.grid(row=1, column=0, sticky=W)
-retailer_entry = Entry(app, textvariable=retailer_text)
-retailer_entry.grid(row=1, column=1)
-# Price
-price_text = StringVar()
-price_label = Label(app, text='Price', font=('bold', 14))
-price_label.grid(row=1, column=2, sticky=W)
-price_entry = Entry(app, textvariable=price_text)
-price_entry.grid(row=1, column=3)
-
-# Parts list (listbox)
-parts_list = Listbox(app, height=8, width=80, border=0)
-parts_list.grid(row=3, column=0, columnspan=3, rowspan=6, pady=20, padx=20)
-
-# Create scrollbar
-scrollbar = Scrollbar(app)
-scrollbar.grid(row=3, column=3)
-
-# Set scroll to listbox
-parts_list.configure(yscrollcommand=scrollbar.set)
-scrollbar.configure(command=parts_list.yview)
-# Bind SELECT
-parts_list.bind('<<ListboxSelect>>', select_item)
-
-# Buttons
-add_btn = Button(app, text="Add Part", width=12, command=add_item)
-add_btn.grid(row=2, column=0, pady=20)
-
-remove_btn = Button(app, text="Remove Part", width=12, command=remove_item)
-remove_btn.grid(row=2, column=1)
-
-update_btn = Button(app, text="Update Part", width=12, command=update_item)
-update_btn.grid(row=2, column=2)
-
-clear_btn = Button(app, text="Clear Input", width=12, command=clear_text)
-clear_btn.grid(row=2, column=3)
-
+class add(tk.Frame):
+     
+    def __init__(self, parent, controller):
+         
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text ="Page 1", font = LARGEFONT)
+        label.grid(row = 0, column = 4, padx = 10, pady = 10)
+  
+        # button to show frame 2 with text
+        # layout2
+        button1 = tk.Button(self, text ="Dashboard",
+                            command = lambda : controller.show_frame(main))
+     
+        # putting the button in its place
+        # by using grid
+        button1.grid(row = 1, column = 1, padx = 10, pady = 10)
+      
+app = tkinterApp()
 app.title('Task Manager')
 app.geometry('700x350')
-
-# Populate data
-populate_list()
-
-# Start program
 app.mainloop()
