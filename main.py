@@ -1,13 +1,13 @@
 import tkinter as tk
-
+from tkcalendar import Calendar
 #class something():
 
 LARGEFONT =("Verdana", 35)
 
 class tkinterApp(tk.Tk):
     todo = [['xyz','20,sep'],['thing2','22,sep']]
-    def add(self):
-        print('add')
+    def add(self, task):
+        todo.append()
 
     def select_item(self, event):
         print('select')
@@ -65,14 +65,20 @@ class add(tk.Frame):
         task.pack( )
         label2 = tk.Label(self,text="Due to: ")
         label2.pack()
-        due = tk.Text(self,height=5, width=40)
+        dueDate= tk.StringVar()
+        due = tk.Entry(self, textvariable =dueDate)
         due.pack( )
-        button1 = tk.Button(self, text ="Dashboard",
-                            command = lambda : controller.show_frame(main))
-        button1.pack()
+        cal = Calendar(self, selectmode='day', year=2021, month=9, day=27)
+        cal.pack(fill="both")
+        button3 = tk.Button(self, text ="pick", command=lambda:dueDate.set(cal.selection_get()))
+        button3.pack()
         button2 = tk.Button(self, text ="Submit",
                             command = controller.add)
         button2.pack()
+        button1 = tk.Button(self, text ="Dashboard",
+                            command = lambda : controller.show_frame(main))
+        button1.pack()
+        
       
 app = tkinterApp()
 app.title('Task Manager')
