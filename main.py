@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkcalendar import Calendar
-#class something():
 
 LARGEFONT =("Verdana", 35)
 
 class tkinterApp(tk.Tk):
-    todo = [['xyz','20,sep'],['thing2','22,sep']]
+    todo = []
     def add(self, task):
-        todo.append()
+        self.todo.append(task)
+        print(str(self.todo))
 
     def select_item(self, event):
         print('select')
@@ -47,7 +47,7 @@ class main(tk.Frame):
         todo_list = tk.Listbox(self, yscrollcommand = scrollbar.set )
         for line in controller.todo:
             todo_list.insert(tk.END, str(line[0]+" "+line[1]))
-        scrollbar.pack()
+        #scrollbar.pack()
         todo_list.pack()
         scrollbar.configure(command=todo_list.yview)
         todo_list.bind('<<ListboxSelect>>', controller.select_item)
@@ -57,11 +57,22 @@ class add(tk.Frame):
     def __init__(self, parent, controller):
          
         tk.Frame.__init__(self, parent)
+        def add():
+            if taskText.get()=='' or dueDate.get()=='':
+                messagebox.showerror('Required Fields', 'Please include all fields')
+                return
+            else:
+                arr= [taskText.get(),dueDate.get()]
+                controller.add(arr)
+                taskText.set('')
+                dueDate.set('')
+                
         label = tk.Label(self, text ="Page 1", font = LARGEFONT)
         label.pack()
         label1 = tk.Label(self,text="Task: ")
         label1.pack()
-        task = tk.Text(self,height=5, width=40)
+        taskText= tk.StringVar()
+        task = tk.Entry(self,textvariable =taskText)
         task.pack( )
         label2 = tk.Label(self,text="Due to: ")
         label2.pack()
@@ -72,8 +83,9 @@ class add(tk.Frame):
         cal.pack(fill="both")
         button3 = tk.Button(self, text ="pick", command=lambda:dueDate.set(cal.selection_get()))
         button3.pack()
+        arr= [taskText.get(),dueDate.get()]
         button2 = tk.Button(self, text ="Submit",
-                            command = controller.add)
+                            command = add)
         button2.pack()
         button1 = tk.Button(self, text ="Dashboard",
                             command = lambda : controller.show_frame(main))
