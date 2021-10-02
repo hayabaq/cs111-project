@@ -5,6 +5,9 @@ LARGEFONT =("Verdana", 35)
 
 class tkinterApp(tk.Tk):
     todo = []
+    def update_item(self,todo_list):
+        print('update')
+
     def add(self, task):
         self.todo.append(task)
         print(str(self.todo))
@@ -14,12 +17,6 @@ class tkinterApp(tk.Tk):
 
     def remove_item(self):
         print('remove')
-
-    def update_item(self):
-        print('update')
-
-    def clear_text(self):
-        print('clear')
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -39,7 +36,7 @@ class tkinterApp(tk.Tk):
         frame.tkraise()
 
 class main(tk.Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller):    
         tk.Frame.__init__(self, parent)
         add_btn = tk.Button(self, text ="Add",command = lambda : controller.show_frame(add))
         add_btn.pack()
@@ -47,7 +44,6 @@ class main(tk.Frame):
         todo_list = tk.Listbox(self, yscrollcommand = scrollbar.set )
         for line in controller.todo:
             todo_list.insert(tk.END, str(line[0]+" "+line[1]))
-        #scrollbar.pack()
         todo_list.pack()
         scrollbar.configure(command=todo_list.yview)
         todo_list.bind('<<ListboxSelect>>', controller.select_item)
