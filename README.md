@@ -1,1 +1,1 @@
-# tasks-manager
+# Simple Calculator
