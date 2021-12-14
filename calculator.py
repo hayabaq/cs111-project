@@ -23,15 +23,22 @@ def sign():
 def store(num):
     global equation, result
     try:
-        if equation=="" and not num.isnumeric() and result!="":
+        if not num.isnumeric() and equation=="" and result=="":
+            equation="0"+num
+        elif not num.isnumeric() and equation=="" and result!="":
+            equation=result+num
+        elif len(equation.split())==3 and not num.isnumeric():
+            calculate()
             equation=result+num
         elif num.isnumeric():
-            text.set(num)
             equation+=num
+            if len(equation.split())==1:
+                text.set(equation.split()[0])
+            elif len(equation.split())==3:
+                text.set(equation.split()[2])
         else:
             equation+=num
-        if len(equation.split())==3:
-            calculate()
+        print(equation)
     except:
         text.set("Error")
         equation=""
@@ -50,9 +57,10 @@ def calculate():
         equation=""
         result=""
 
-
+#Entry window 
 text = tk.StringVar()
 screen = tk.Entry(app, textvariable =text , state='readonly').grid(row=0, column=0, columnspan=4 ,sticky="nesw")
+#Buttons matrix 
 clearbtn = tk.Button(app, text='AC',highlightbackground='grey', command=clear).grid(row=1, column=0,sticky="nesw")
 signbtn = tk.Button(app, text='+/-',highlightbackground='grey', command=sign).grid(row=1, column=1,sticky="nesw")
 remainderbtn = tk.Button(app, text='%',highlightbackground='grey', command=lambda:store(' % ')).grid(row=1, column=2,sticky="nesw")
@@ -72,9 +80,11 @@ plusbtn = tk.Button(app, text='+',highlightbackground='grey', command=lambda:sto
 btn0 = tk.Button(app, text='0',highlightbackground='grey', command=lambda:store('0')).grid(row=5, columnspan=2, column=0,sticky='nesw')
 dotbtn = tk.Button(app, text='.',highlightbackground='grey', command=lambda:store('.')).grid(row=5, column=2,sticky='nesw')
 equalbtn = tk.Button(app, text='=',highlightbackground='grey', command=calculate).grid(row=5, column=3,sticky='nesw')
-
+#Application title
 app.title('Calculator')
+#Initial window's size
 app.geometry('350x400')
+#Make the button responsive when the window's size change
 for i in range(6):
     app.grid_rowconfigure(i,  weight =1)
 for i in range(4):
