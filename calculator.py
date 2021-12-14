@@ -11,9 +11,9 @@ def clear():
 def sign():
     global equation, result
     try:
-        tmp =text.get()
+        tmp =int(text.get())
         if tmp != 0:
-            result = int(tmp)* -1
+            result = tmp* -1
             equation=equation.replace(tmp,str(result))
             text.set(result)
     except:
