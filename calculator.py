@@ -2,24 +2,26 @@ import tkinter as tk
 app = tk.Tk()
 equation = ""
 result=""
-
+# clear all entries
 def clear():
     global equation, result
     equation=""
     result=""
     text.set(0)
+# change the sign of the number postive/negative
 def sign():
     global equation, result
     try:
-        tmp =int(text.get())
-        if tmp != 0:
-            result = tmp* -1
+        tmp =text.get()
+        if float(tmp) != 0:
+            result = float(tmp)* -1
             equation=equation.replace(tmp,str(result))
             text.set(result)
     except:
         text.set("Error")
         result=""
         equation=""
+# store the value of the buttons clicked by the user
 def store(num):
     global equation, result
     try:
@@ -43,11 +45,12 @@ def store(num):
         text.set("Error")
         equation=""
         result="" 
+#compute the equation value and show the result on the entry screen
 def calculate():
     global equation , result
     try:
         if equation=="" and result=="":
-            text.set(str(0))  
+            text.set("0")  
         else:    
             result= str(eval(equation))
             text.set(result)
@@ -84,7 +87,7 @@ equalbtn = tk.Button(app, text='=',highlightbackground='grey', command=calculate
 app.title('Calculator')
 #Initial window's size
 app.geometry('350x400')
-#Make the button responsive when the window's size change
+#Make the button responsive when the window's size changes
 for i in range(6):
     app.grid_rowconfigure(i,  weight =1)
 for i in range(4):
